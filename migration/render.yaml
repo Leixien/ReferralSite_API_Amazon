@@ -1,0 +1,51 @@
+services:
+  # API Backend
+  - type: web
+    name: amazon-finder-api
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: pnpm install && pnpm -C apps/api build && pnpm -C packages/shared build
+    startCommand: pnpm -C apps/api start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: AWS_ACCESS_KEY
+        sync: false
+      - key: AWS_SECRET_KEY
+        sync: false
+      - key: AMAZON_ASSOCIATE_TAG
+        sync: false
+      - key: AMAZON_REGION
+        value: eu-west-1
+      - key: AMAZON_MARKETPLACE
+        value: www.amazon.it
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://amazon-finder-web.onrender.com
+      - key: CACHE_TTL
+        value: 300
+      - key: CACHE_TYPE
+        value: memory
+      - key: LOG_LEVEL
+        value: info
+    healthCheckPath: /healthz
+
+  # Web Frontend (Next.js)
+  - type: web
+    name: amazon-finder-web
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: pnpm install && pnpm -C apps/web build && pnpm -C packages/shared build
+    startCommand: pnpm -C apps/web start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://amazon-finder-api.onrender.com

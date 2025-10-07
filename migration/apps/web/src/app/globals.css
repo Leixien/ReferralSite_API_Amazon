@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --amazon-orange: #FF9900;
+  --amazon-dark: #232F3E;
+  --amazon-light: #37475A;
+  --price-red: #B12704;
+  --prime-blue: #00A8E1;
+  --discount-red: #CC0C39;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-color: #131A22;
+  color: #FFFFFF;
+}
