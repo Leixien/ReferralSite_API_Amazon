@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Risultati Ricerca - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Search Bar (sticky) -->
+    <div class="results-header">
+        <form action="{{ url_for('search.search') }}" method="POST" class="search-bar">
+            <input
+                type="text"
+                name="keywords"
+                class="search-input"
+                placeholder="Cerca prodotti..."
+                value="{{ search_params.keywords }}"
+                required
+            >
+            <button type="submit" class="btn btn-primary">
+                🔍 Cerca
+            </button>
+        </form>
+    </div>
+
+    <!-- Error Message -->
+    {% if error %}
+    <div class="alert alert-error">
+        <span class="alert-icon">⚠️</span>
+        <div class="alert-content">
+            <strong>Errore:</strong> {{ error }}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Results Count -->
+    {% if products %}
+    <div class="results-info">
+        <h2 class="results-title">
+            Trovati {{ count }} prodott{{ 'o' if count == 1 else 'i' }}
+            {% if search_params.keywords %}
+            per "{{ search_params.keywords }}"
+            {% endif %}
+        </h2>
+
+        {% if search_params.max_price or search_params.prime_only or search_params.discount_only %}
+        <div class="active-filters">
+            <span class="filter-label">Filtri attivi:</span>
+            {% if search_params.max_price %}
+            <span class="filter-tag">Prezzo max: € {{ search_params.max_price }}</span>
+            {% endif %}
+            {% if search_params.prime_only %}
+            <span class="filter-tag prime">Prime</span>
+            {% endif %}
+            {% if search_params.discount_only %}
+            <span class="filter-tag discount">In sconto</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <!-- Image -->
+            <div class="product-image">
+                <img src="{{ product.image_url }}" alt="{{ product.title }}" loading="lazy">
+                {% if product.price.discount_percent %}
+                <span class="badge badge-discount">-{{ product.price.discount_percent }}%</span>
+                {% endif %}
+                {% if product.is_prime %}
+                <span class="badge badge-prime">Prime</span>
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="product-info">
+                <h3 class="product-title" title="{{ product.title }}">
+                    {{ product.title }}
+                </h3>
+
+                <p class="product-brand">{{ product.brand }}</p>
+
+                <!-- Rating -->
+                {% if product.rating.stars > 0 %}
+                <div class="product-rating">
+                    <span class="stars">{{ product.rating.stars | stars }}</span>
+                    <span class="rating-value">{{ product.rating.stars }}</span>
+                    <span class="rating-count">({{ product.rating.count }})</span>
+                </div>
+                {% endif %}
+
+                <!-- Price -->
+                <div class="product-price">
+                    {% if product.price.current %}
+                    <span class="price-current">{{ product.price.current | format_price }}</span>
+                    {% if product.price.original %}
+                    <span class="price-original">{{ product.price.original | format_price }}</span>
+                    {% endif %}
+                    {% else %}
+                    <span class="price-unavailable">Prezzo non disponibile</span>
+                    {% endif %}
+                </div>
+
+                <!-- Features -->
+                {% if product.features %}
+                <ul class="product-features">
+                    {% for feature in product.features[:3] %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <!-- CTA Button -->
+                <a
+                    href="{{ product.url }}"
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="btn btn-amazon"
+                >
+                    Vedi su Amazon →
+                </a>
+
+                <!-- ASIN (piccolo) -->
+                <p class="product-asin">ASIN: {{ product.asin }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    {% elif not error %}
+    <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h2 class="empty-title">Nessun prodotto trovato</h2>
+        <p class="empty-text">
+            Prova a modificare i filtri di ricerca o usa parole chiave diverse.
+        </p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+            Nuova Ricerca
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/filters.js') }}"></script>
+{% endblock %}

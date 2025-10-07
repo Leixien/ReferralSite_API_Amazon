@@ -1,0 +1,116 @@
+/* CSS Custom Properties - Design Tokens */
+
+:root {
+    /* Primary Colors - Amazon Inspired */
+    --amazon-orange: #FF9900;
+    --amazon-orange-dark: #E88B00;
+    --amazon-dark: #232F3E;
+    --amazon-light: #37475A;
+
+    /* Status Colors */
+    --price-red: #B12704;
+    --prime-blue: #00A8E1;
+    --discount-red: #CC0C39;
+    --success-green: #067D62;
+
+    /* Neutrals - Light Mode */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F3F3F3;
+    --bg-tertiary: #EAEDED;
+    --text-primary: #0F1111;
+    --text-secondary: #565959;
+    --text-tertiary: #898989;
+    --border-color: #D5D9D9;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Dark Mode Variables */
+    --dark-bg-primary: #131A22;
+    --dark-bg-secondary: #1B2533;
+    --dark-bg-tertiary: #232F3E;
+    --dark-text-primary: #FFFFFF;
+    --dark-text-secondary: #C9CDD0;
+    --dark-text-tertiary: #898989;
+    --dark-border-color: #3A4553;
+    --dark-shadow-color: rgba(0, 0, 0, 0.3);
+
+    /* Spacing */
+    --space-xs: 0.25rem;   /* 4px */
+    --space-sm: 0.5rem;    /* 8px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
+    --space-2xl: 3rem;     /* 48px */
+    --space-3xl: 4rem;     /* 64px */
+
+    /* Typography */
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 2rem;      /* 32px */
+    --font-size-4xl: 2.5rem;    /* 40px */
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 var(--shadow-color);
+    --shadow-md: 0 4px 6px -1px var(--shadow-color);
+    --shadow-lg: 0 10px 15px -3px var(--shadow-color);
+    --shadow-xl: 0 20px 25px -5px var(--shadow-color);
+
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 200ms ease-in-out;
+    --transition-slow: 300ms ease-in-out;
+
+    /* Breakpoints (for reference in media queries) */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+
+    /* Container */
+    --container-max-width: 1200px;
+    --container-padding: var(--space-md);
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --bg-primary: var(--dark-bg-primary);
+    --bg-secondary: var(--dark-bg-secondary);
+    --bg-tertiary: var(--dark-bg-tertiary);
+    --text-primary: var(--dark-text-primary);
+    --text-secondary: var(--dark-text-secondary);
+    --text-tertiary: var(--dark-text-tertiary);
+    --border-color: var(--dark-border-color);
+    --shadow-color: var(--dark-shadow-color);
+}
+
+/* Prefers Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg-primary: var(--dark-bg-primary);
+        --bg-secondary: var(--dark-bg-secondary);
+        --bg-tertiary: var(--dark-bg-tertiary);
+        --text-primary: var(--dark-text-primary);
+        --text-secondary: var(--dark-text-secondary);
+        --text-tertiary: var(--dark-text-tertiary);
+        --border-color: var(--dark-border-color);
+        --shadow-color: var(--dark-shadow-color);
+    }
+}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1 class="hero-title">Trova le Migliori Offerte Amazon</h1>
+        <p class="hero-subtitle">Ricerca prodotti e ottieni link affiliati in tempo reale</p>
+
+        {% if config.get('DEMO_MODE') or not config.get('AWS_ACCESS_KEY') %}
+        <div style="background: #ff9900; color: #232F3E; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; font-weight: 600;">
+            ⚠️ DEMO MODE - Stai visualizzando dati di esempio. Configura le credenziali Amazon nel file .env per usare l'API reale.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <div class="search-section">
+        <form action="{{ url_for('search.search') }}" method="POST" class="search-form" id="searchForm">
+            <!-- Keywords -->
+            <div class="form-group">
+                <label for="keywords" class="form-label">
+                    Parole chiave
+                    <span class="required">*</span>
+                </label>
+                <input
+                    type="text"
+                    id="keywords"
+                    name="keywords"
+                    class="form-input"
+                    placeholder="Es: laptop gaming, cuffie wireless..."
+                    required
+                    autofocus
+                >
+            </div>
+
+            <div class="form-row">
+                <!-- Categoria -->
+                <div class="form-group">
+                    <label for="category" class="form-label">Categoria</label>
+                    <select id="category" name="category" class="form-select">
+                        {% for key, value in categories.items() %}
+                        <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Prezzo Massimo -->
+                <div class="form-group">
+                    <label for="max_price" class="form-label">Prezzo massimo (€)</label>
+                    <input
+                        type="number"
+                        id="max_price"
+                        name="max_price"
+                        class="form-input"
+                        placeholder="Es: 100"
+                        min="0"
+                        step="0.01"
+                    >
+                </div>
+            </div>
+
+            <!-- Filtri -->
+            <div class="form-group filters">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="prime_only" name="prime_only">
+                    <span class="checkbox-text">
+                        <span class="prime-badge">Prime</span>
+                        Solo prodotti Prime
+                    </span>
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="discount_only" name="discount_only">
+                    <span class="checkbox-text">
+                        🔥 Solo prodotti in sconto
+                    </span>
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-search" id="searchBtn">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-text">Cerca Prodotti</span>
+            </button>
+        </form>
+
+        <!-- Loading Spinner (nascosto di default) -->
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Ricerca in corso...</p>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-icon">⚡</div>
+                <h3 class="info-title">Ricerca Veloce</h3>
+                <p class="info-text">Trova prodotti Amazon in pochi secondi con filtri avanzati</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">💰</div>
+                <h3 class="info-title">Link Affiliati</h3>
+                <p class="info-text">Genera automaticamente link affiliati pronti all'uso</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">📊</div>
+                <h3 class="info-title">Prezzi e Sconti</h3>
+                <p class="info-text">Visualizza prezzi originali, sconti e badge Prime</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form submission con loading spinner
+    document.getElementById('searchForm').addEventListener('submit', function() {
+        document.getElementById('searchBtn').disabled = true;
+        document.getElementById('loadingSpinner').style.display = 'block';
+    });
+</script>
+{% endblock %}
