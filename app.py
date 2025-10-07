@@ -98,9 +98,11 @@ def create_app():
     return app
 
 
-if __name__ == '__main__':
-    app = create_app()
+# Crea l'app a livello di modulo per gunicorn
+app = create_app()
 
+
+if __name__ == '__main__':
     # Ottieni porta da env o usa 5000
     port = int(os.getenv('PORT', 5000))
 
